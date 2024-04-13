@@ -8,7 +8,7 @@ const contracts = {
   },
   // aribitrum sepolia.
   421614: {
-    auditTrail: "0x36e6909E146E3c15d19c0A9A6fa6dDe649A96662",
+    auditTrail: "0x1ab6D7eB4DBb0509e90cd83A24F467594cD30562",
   },
 };
 

@@ -27,6 +27,7 @@ export declare namespace AuditTrail {
   export type AuditLogStruct = {
     userNameEncrypted: string;
     documentHash: string;
+    customerName: string;
     timeStamp: BigNumberish;
     sigType: BigNumberish;
   };
@@ -34,11 +35,13 @@ export declare namespace AuditTrail {
   export type AuditLogStructOutput = [
     userNameEncrypted: string,
     documentHash: string,
+    customerName: string,
     timeStamp: bigint,
     sigType: bigint
   ] & {
     userNameEncrypted: string;
     documentHash: string;
+    customerName: string;
     timeStamp: bigint;
     sigType: bigint;
   };
@@ -47,13 +50,11 @@ export declare namespace AuditTrail {
 export interface AuditTrailInterface extends Interface {
   getFunction(
     nameOrSignature:
-      | "CUSTOMER_NAME"
       | "DEFAULT_ADMIN_ROLE"
-      | "IdToAuditLog"
+      | "batchCreateAuditLogs"
       | "createAuditLog"
       | "getAuditLogById"
       | "getAuditLogs"
-      | "getCustomerName"
       | "getRoleAdmin"
       | "grantRole"
       | "hasRole"
@@ -76,20 +77,16 @@ export interface AuditTrailInterface extends Interface {
   ): EventFragment;
 
   encodeFunctionData(
-    functionFragment: "CUSTOMER_NAME",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
     functionFragment: "DEFAULT_ADMIN_ROLE",
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "IdToAuditLog",
-    values: [BigNumberish]
+    functionFragment: "batchCreateAuditLogs",
+    values: [string[], string[], string[], BigNumberish[], BigNumberish[]]
   ): string;
   encodeFunctionData(
     functionFragment: "createAuditLog",
-    values: [string, string, BigNumberish, BigNumberish]
+    values: [string, string, string, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "getAuditLogById",
@@ -97,10 +94,6 @@ export interface AuditTrailInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "getAuditLogs",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getCustomerName",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -139,15 +132,11 @@ export interface AuditTrailInterface extends Interface {
   ): string;
 
   decodeFunctionResult(
-    functionFragment: "CUSTOMER_NAME",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "DEFAULT_ADMIN_ROLE",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "IdToAuditLog",
+    functionFragment: "batchCreateAuditLogs",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -160,10 +149,6 @@ export interface AuditTrailInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "getAuditLogs",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getCustomerName",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -197,18 +182,21 @@ export namespace AuditLogCreatedEvent {
   export type InputTuple = [
     userNameEncrypted: string,
     documentHash: string,
+    customerName: string,
     timeStamp: BigNumberish,
     sigType: BigNumberish
   ];
   export type OutputTuple = [
     userNameEncrypted: string,
     documentHash: string,
+    customerName: string,
     timeStamp: bigint,
     sigType: bigint
   ];
   export interface OutputObject {
     userNameEncrypted: string;
     documentHash: string;
+    customerName: string;
     timeStamp: bigint;
     sigType: bigint;
   }
@@ -332,27 +320,25 @@ export interface AuditTrail extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
-  CUSTOMER_NAME: TypedContractMethod<[], [string], "view">;
-
   DEFAULT_ADMIN_ROLE: TypedContractMethod<[], [string], "view">;
 
-  IdToAuditLog: TypedContractMethod<
-    [arg0: BigNumberish],
+  batchCreateAuditLogs: TypedContractMethod<
     [
-      [string, string, bigint, bigint] & {
-        userNameEncrypted: string;
-        documentHash: string;
-        timeStamp: bigint;
-        sigType: bigint;
-      }
+      _userNamesEncrypted: string[],
+      _documentHashes: string[],
+      _customerNames: string[],
+      _timeStamps: BigNumberish[],
+      _sigTypes: BigNumberish[]
     ],
-    "view"
+    [void],
+    "nonpayable"
   >;
 
   createAuditLog: TypedContractMethod<
     [
       _userNameEncrypted: string,
       _documentHash: string,
+      _customerName: string,
       _timeStamp: BigNumberish,
       _sigType: BigNumberish
     ],
@@ -361,7 +347,7 @@ export interface AuditTrail extends BaseContract {
   >;
 
   getAuditLogById: TypedContractMethod<
-    [_Id: BigNumberish],
+    [_id: BigNumberish],
     [AuditTrail.AuditLogStructOutput],
     "view"
   >;
@@ -371,8 +357,6 @@ export interface AuditTrail extends BaseContract {
     [AuditTrail.AuditLogStructOutput[]],
     "view"
   >;
-
-  getCustomerName: TypedContractMethod<[], [string], "view">;
 
   getRoleAdmin: TypedContractMethod<[role: BytesLike], [string], "view">;
 
@@ -423,24 +407,20 @@ export interface AuditTrail extends BaseContract {
   ): T;
 
   getFunction(
-    nameOrSignature: "CUSTOMER_NAME"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
     nameOrSignature: "DEFAULT_ADMIN_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "IdToAuditLog"
+    nameOrSignature: "batchCreateAuditLogs"
   ): TypedContractMethod<
-    [arg0: BigNumberish],
     [
-      [string, string, bigint, bigint] & {
-        userNameEncrypted: string;
-        documentHash: string;
-        timeStamp: bigint;
-        sigType: bigint;
-      }
+      _userNamesEncrypted: string[],
+      _documentHashes: string[],
+      _customerNames: string[],
+      _timeStamps: BigNumberish[],
+      _sigTypes: BigNumberish[]
     ],
-    "view"
+    [void],
+    "nonpayable"
   >;
   getFunction(
     nameOrSignature: "createAuditLog"
@@ -448,6 +428,7 @@ export interface AuditTrail extends BaseContract {
     [
       _userNameEncrypted: string,
       _documentHash: string,
+      _customerName: string,
       _timeStamp: BigNumberish,
       _sigType: BigNumberish
     ],
@@ -457,16 +438,13 @@ export interface AuditTrail extends BaseContract {
   getFunction(
     nameOrSignature: "getAuditLogById"
   ): TypedContractMethod<
-    [_Id: BigNumberish],
+    [_id: BigNumberish],
     [AuditTrail.AuditLogStructOutput],
     "view"
   >;
   getFunction(
     nameOrSignature: "getAuditLogs"
   ): TypedContractMethod<[], [AuditTrail.AuditLogStructOutput[]], "view">;
-  getFunction(
-    nameOrSignature: "getCustomerName"
-  ): TypedContractMethod<[], [string], "view">;
   getFunction(
     nameOrSignature: "getRoleAdmin"
   ): TypedContractMethod<[role: BytesLike], [string], "view">;
@@ -551,7 +529,7 @@ export interface AuditTrail extends BaseContract {
   >;
 
   filters: {
-    "AuditLogCreated(string,string,uint256,uint8)": TypedContractEvent<
+    "AuditLogCreated(string,string,string,uint32,uint8)": TypedContractEvent<
       AuditLogCreatedEvent.InputTuple,
       AuditLogCreatedEvent.OutputTuple,
       AuditLogCreatedEvent.OutputObject

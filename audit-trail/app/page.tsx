@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       <div className="relative">
-        <div className="absolute inset-0 bg-[url('/eigen.jpeg')] bg-no-repeat bg-cover h-full opacity-15"></div>
+        <div className="absolute inset-0 bg-[url('/eigen.jpeg')] bg-no-repeat bg-cover h-full min-h-screen opacity-15"></div>
         <div className="relative z-10 p-8">
           <div className="w-2/3 mx-auto">
             <div
