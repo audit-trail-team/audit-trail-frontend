@@ -241,6 +241,7 @@ export const AuditLogs = () => {
   React.useEffect(() => {
     table.getColumn("userNameDecrypted")?.toggleVisibility();
   }, [table]);
+
   return (
     <>
       <div className={"text-3xl m-4 text-center"}>All Log Records</div>
@@ -262,7 +263,7 @@ export const AuditLogs = () => {
         />
         <Input
           // label="Email"
-          placeholder="Auditor view key..."
+          placeholder="Auditor password key..."
           value={auditorKey}
           onChange={(event) => {
             console.log("event", event.target.value);

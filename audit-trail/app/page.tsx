@@ -22,7 +22,7 @@ export default function Home() {
                 <Image src={swiss} className={"h-10 w-10"} alt={""} />
                 <p className={"text-3xl"}>Audit Trail</p>
               </div>
-              <p className="ml-auto text-lg">Network: Arbitrum</p>
+              <p className="ml-auto text-lg">Network: Arbitrum (Ethereum L2)</p>
             </div>
             <div
               className={"w-full h-fit border-2 border-red-500 border-dotted"}
