@@ -1,7 +1,5 @@
-// "use client";
-import { Button } from "@/components/ui/button";
 import * as React from "react";
-import { FC, useMemo } from "react";
+import { FC } from "react";
 import Image from "next/image";
 import { getContracts } from "../app/config/contracts.config";
 import {
@@ -102,7 +100,7 @@ export const AuditLogs = () => {
       setAuditLogs(logs as AuditLog[]);
     };
     fetchAuditLogs();
-  }, [client]);
+  }, [auditLogs.length, client]);
 
   const auditTrailAddress = getContracts(chainId).auditTrail as `0x${string}`;
   console.log("auditTrailAddress", auditTrailAddress);
@@ -117,11 +115,12 @@ export const AuditLogs = () => {
 
   const columns: ColumnDef<AuditLog>[] = [
     {
-      accessorKey: "Usernames",
+      accessorKey: "userNameEncrypted",
       header: () => {
         return <CenterAlignedHeader header="Username Encrypted" />;
       },
       cell: ({ row }: any) => {
+        console.log("username", row.original?.userNameEncrypted?.toString());
         return (
           <div className="text-center">
             {row.original?.userNameEncrypted?.toString()}
@@ -147,7 +146,7 @@ export const AuditLogs = () => {
       },
       cell: ({ row }: any) => (
         <div className={"flex justify-center items-center space-x-2"}>
-          <div className="text-center">Glaux Group</div>
+          <div className="text-center">Glaux Group Demo</div>
         </div>
       ),
     },
@@ -185,10 +184,10 @@ export const AuditLogs = () => {
     //@ts-ignore
     columns,
     onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
@@ -202,6 +201,23 @@ export const AuditLogs = () => {
   return (
     <>
       <div className={"text-3xl m-4 text-center"}>All Log Records</div>
+      <div className="flex items-center py-4">
+        <Input
+          placeholder="Filter usernames..."
+          value={
+            (table
+              .getColumn("userNameEncrypted")
+              ?.getFilterValue() as string) ?? ""
+          }
+          onChange={(event) => {
+            console.log("event", event.target.value);
+            table
+              .getColumn("userNameEncrypted")
+              ?.setFilterValue(event.target.value);
+          }}
+          className="max-w-sm m-2 ml-6"
+        />
+      </div>
       <div className="rounded-md border-2 border-gray-700 m-6">
         <Table>
           <TableHeader>
@@ -226,8 +242,8 @@ export const AuditLogs = () => {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+            {table.getFilteredRowModel().rows?.length ? (
+              table.getFilteredRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
