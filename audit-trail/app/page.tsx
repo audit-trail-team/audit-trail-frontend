@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 
 import swiss from "@/public/swiss.png";
 import { AuditLogs } from "@/components/AuditLogs";
