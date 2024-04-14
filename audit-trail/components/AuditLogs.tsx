@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import Image from "next/image";
 import { getContracts } from "./config/contracts.config";
 import Script from "next/script";
@@ -166,6 +166,7 @@ export const AuditLogs = () => {
           </div>
         );
       },
+      filterFn: "equalsString",
     },
     {
       accessorKey: "documentHash",
@@ -238,7 +239,7 @@ export const AuditLogs = () => {
     },
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     table.getColumn("userNameDecrypted")?.toggleVisibility();
   }, [table]);
 
@@ -254,15 +255,24 @@ export const AuditLogs = () => {
               ?.getFilterValue() as string) ?? ""
           }
           onChange={(event) => {
-            console.log("event", event.target.value);
-            table
-              .getColumn("userNameDecrypted")
-              ?.setFilterValue(event.target.value);
+            if (event.target.value !== "") {
+              console.log("event", event.target.value);
+              table
+                .getColumn("userNameDecrypted")
+                ?.setFilterValue(event.target.value);
+              table.getColumn("userNameDecrypted")?.toggleVisibility(true);
+              table.getColumn("userNameEncrypted")?.toggleVisibility(false);
+            } else {
+              table
+                .getColumn("userNameDecrypted")
+                ?.setFilterValue(event.target.value);
+              table.getColumn("userNameDecrypted")?.toggleVisibility(false);
+              table.getColumn("userNameEncrypted")?.toggleVisibility(true);
+            }
           }}
           className="max-w-sm m-2 ml-6"
         />
         <Input
-          // label="Email"
           placeholder="Auditor password key..."
           value={auditorKey}
           onChange={(event) => {
