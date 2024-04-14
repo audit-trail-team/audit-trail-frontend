@@ -1,8 +1,7 @@
 import * as React from "react";
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import Image from "next/image";
 import { getContracts } from "./config/contracts.config";
-import Script from "next/script";
 
 import {
   ColumnDef,
@@ -78,7 +77,9 @@ const sigTypeMap: { [index: number]: string } = {
 
 export const AuditLogs = () => {
   // arb sepolia
-  const chainId = 421614;
+  // const chainId = 421614;
+  // arb one
+  const chainId = 42161;
 
   const [encryptedName, setEncryptedName] = React.useState<string>("");
 
@@ -90,7 +91,7 @@ export const AuditLogs = () => {
 
   const client = createPublicClient({
     chain: arbitrumSepolia,
-    transport: http("https://sepolia-rollup.arbitrum.io/rpc"),
+    transport: http("https://arbitrum.llamarpc.com"),
   });
 
   React.useEffect(() => {
@@ -239,7 +240,8 @@ export const AuditLogs = () => {
     },
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
+    // 64000095;
     table.getColumn("userNameDecrypted")?.toggleVisibility();
   }, [table]);
 

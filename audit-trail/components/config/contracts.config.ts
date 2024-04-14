@@ -4,7 +4,7 @@ type ContractNames = "auditTrail";
 const contracts = {
   // arbitrum one.
   42161: {
-    auditTrail: "",
+    auditTrail: "0xf1Cf036F937117499C3df9D54b0FCE186d820250",
   },
   // aribitrum sepolia.
   421614: {
